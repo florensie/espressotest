@@ -2,6 +2,26 @@ plugins {
     id 'fabric-loom' version '0.7-SNAPSHOT'
 }
 
+import org.gradle.internal.os.OperatingSystem
+
+switch (OperatingSystem.current()) {
+    case OperatingSystem.LINUX:
+        def osArch = System.getProperty("os.arch")
+        project.ext.lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
+                ? "natives-linux-${osArch.contains("64") || osArch.startsWith("armv8") ? "arm64" : "arm32"}"
+                : "natives-linux"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = System.getProperty("os.arch").startsWith("aarch64") ? "natives-macos-arm64" : "natives-macos"
+        break
+    case OperatingSystem.WINDOWS:
+        def osArch = System.getProperty("os.arch")
+        project.ext.lwjglNatives = osArch.contains("64")
+                ? "natives-windows${osArch.startsWith("aarch64") ? "-arm64" : ""}"
+                : "natives-windows-x86"
+        break
+}
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -39,11 +59,11 @@ dependencies {
     implementation "org.lwjgl:lwjgl-opengl"
     implementation "org.lwjgl:lwjgl-stb"
     implementation "org.lwjgl:lwjgl-tinyfd"
-    runtimeOnly "org.lwjgl:lwjgl::${project.lwjgl_natives}"
-    runtimeOnly "org.lwjgl:lwjgl-glfw::${project.lwjgl_natives}"
-    runtimeOnly "org.lwjgl:lwjgl-jemalloc::${project.lwjgl_natives}"
-    runtimeOnly "org.lwjgl:lwjgl-openal::${project.lwjgl_natives}"
-    runtimeOnly "org.lwjgl:lwjgl-opengl::${project.lwjgl_natives}"
-    runtimeOnly "org.lwjgl:lwjgl-stb::${project.lwjgl_natives}"
-    runtimeOnly "org.lwjgl:lwjgl-tinyfd::${project.lwjgl_natives}"
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-jemalloc::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-tinyfd::$lwjglNatives"
 }
