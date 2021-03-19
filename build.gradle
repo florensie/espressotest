@@ -9,13 +9,18 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 loom {
     runs {
         client {
-            vmArgs("-truffle", "-XX:+IgnoreUnrecognizedVMOptions")
+            vmArgs("-truffle", "-XX:+IgnoreUnrecognizedVMOptions", "--java.InlineFieldAccessors", "--engine.Inlining=false")
         }
         server {
-            vmArgs("-truffle", "-XX:+IgnoreUnrecognizedVMOptions")
+            vmArgs("-truffle", "-XX:+IgnoreUnrecognizedVMOptions", "--java.InlineFieldAccessors", "--engine.Inlining=false")
         }
     }
 }
@@ -24,4 +29,21 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings minecraft.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    implementation platform("org.lwjgl:lwjgl-bom:${project.lwjgl_version}")
+
+    implementation "org.lwjgl:lwjgl"
+    implementation "org.lwjgl:lwjgl-glfw"
+    implementation "org.lwjgl:lwjgl-jemalloc"
+    implementation "org.lwjgl:lwjgl-openal"
+    implementation "org.lwjgl:lwjgl-opengl"
+    implementation "org.lwjgl:lwjgl-stb"
+    implementation "org.lwjgl:lwjgl-tinyfd"
+    runtimeOnly "org.lwjgl:lwjgl::${project.lwjgl_natives}"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::${project.lwjgl_natives}"
+    runtimeOnly "org.lwjgl:lwjgl-jemalloc::${project.lwjgl_natives}"
+    runtimeOnly "org.lwjgl:lwjgl-openal::${project.lwjgl_natives}"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::${project.lwjgl_natives}"
+    runtimeOnly "org.lwjgl:lwjgl-stb::${project.lwjgl_natives}"
+    runtimeOnly "org.lwjgl:lwjgl-tinyfd::${project.lwjgl_natives}"
 }
