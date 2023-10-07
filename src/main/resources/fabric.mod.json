@@ -4,11 +4,12 @@
   "version": "1.0.0",
   "name": "EspressoTest",
   "description": "",
-  "authors": [],
+  "authors": ["Florens Pauwels"],
   "contact": {},
   "license": "MIT",
   "environment": "*",
   "entrypoints": {},
+  "mixins": ["espressotest.mixins.json"],
   "depends": {
     "fabricloader": "*",
     "minecraft": "*"

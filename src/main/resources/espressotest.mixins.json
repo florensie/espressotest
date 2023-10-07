@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "be.florens.espressotest.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "JvmProfilerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
